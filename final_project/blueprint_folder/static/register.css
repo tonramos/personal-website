@@ -1,0 +1,127 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('display.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container {
+    background: rgba(0, 0, 64, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
+    width: 100%;
+    margin: 0;
+    max-width: 400px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2rem;
+    color: #87CEFA;
+    text-shadow: 0 0 10px #1E90FF, 0 0 20px #00BFFF;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-size: 1rem;
+    color: #D8BFD8;
+    margin-bottom: 5px;
+}
+
+input[type="text"], input[type="password"], input[type="email"], 
+input[type="tel"], input[type="number"], input[type="date"], textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    box-shadow: 0 0 8px rgba(72, 61, 139, 0.5);
+    margin-bottom: 15px;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: #1E90FF;
+    box-shadow: 0 0 12px #1E90FF, 0 0 20px #00BFFF;
+}
+
+textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+button {
+    background: linear-gradient(45deg, #1E90FF, #00BFFF);
+    color: white;
+    font-size: 1.1rem;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 0 15px #00BFFF;
+}
+
+button:hover {
+    background: linear-gradient(45deg, #00BFFF, #87CEFA);
+    box-shadow: 0 0 25px #1E90FF, 0 0 35px #00BFFF;
+}
+
+.error-message {
+    color: #FF6347;
+    background: rgba(255, 99, 71, 0.2);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+.login-link {
+    margin-top: 20px;
+    color: #B0C4DE;
+}
+
+.login-link a {
+    color: #1E90FF;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+    color: #00BFFF;
+}
+
+@media (max-width: 600px) {
+    .container {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    input, button, textarea {
+        font-size: 1rem;
+    }
+}

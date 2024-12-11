@@ -1,0 +1,93 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background: linear-gradient(rgba(0, 0, 128, 0.7), rgba(0, 0, 64, 0.7)), 
+              url('https://source.unsplash.com/1600x900/?galaxy,stars') no-repeat center center/cover;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  background: rgba(0, 0, 64, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  padding: 30px;
+  width: 350px;
+  box-shadow: 0 0 20px rgba(0, 128, 255, 0.5);
+  text-align: center;
+}
+
+h1 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  text-shadow: 0 0 8px rgba(0, 128, 255, 0.7);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 1rem;
+  text-shadow: 0 0 4px rgba(0, 128, 255, 0.5);
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1rem;
+  box-shadow: 0 0 6px rgba(0, 128, 255, 0.3);
+}
+
+input:focus {
+  outline: none;
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.8);
+}
+
+button {
+  background: linear-gradient(45deg, #1e90ff, #00bfff);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px rgba(0, 128, 255, 0.8);
+}
+
+.register-link a {
+  color: #00bfff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.register-link a:hover {
+  color: #1e90ff;
+}
+
+.error-message {
+  color: #ff6347;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+}
+
+.success-message {
+  color: #32cd32;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+}

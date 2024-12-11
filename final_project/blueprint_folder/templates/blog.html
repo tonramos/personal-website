@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-dark">Blog Posts</h1>
+        <a href="{{ url_for('auth.new_post') }}" class="btn btn-primary glass-button">
+            <i class="fas fa-plus"></i> Create New Post
+        </a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} glass-card">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% if posts %}
+        {% for post in posts %}
+            <div class="card glass-card mb-4">
+                <div class="card-header" style="background: rgba(13, 110, 253, 0.7);">
+                    <h2 class="card-title mb-0 text-dark">{{ post.title }}</h2>
+                </div>
+                <div class="card-body" style="background: rgba(255, 255, 255, 0.95);">
+                    <p class="text-dark">
+                        <i class="fas fa-user text-primary"></i> Posted by {{ post.username }} 
+                        <br>
+                        <i class="fas fa-calendar text-primary"></i> {{ post.created_at.strftime('%B %d, %Y') }}
+                        {% if post.updated_at %}
+                            <br>
+                            <i class="fas fa-edit text-primary"></i> Updated on {{ post.updated_at.strftime('%B %d, %Y') }}
+                        {% endif %}
+                    </p>
+                    <div class="card-text text-dark">
+                        {% for line in post.content.split('\n') %}
+                            <p>
+                                {% for word in line.split() %}
+                                    {% if word.startswith('http://') or word.startswith('https://') %}
+                                        <a href="{{ word }}" target="_blank" rel="noopener noreferrer" class="text-primary">{{ word }}</a>
+                                    {% else %}
+                                        {{ word }}
+                                    {% endif %}
+                                {% endfor %}
+                            </p>
+                        {% endfor %}
+                    </div>
+                    
+                    {% if session.username == post.username %}
+                        <div class="btn-group mt-3">
+                            <a href="{{ url_for('auth.edit_post', post_id=post.id) }}" class="btn btn-light glass-button btn-sm">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <form action="{{ url_for('auth.delete_post', post_id=post.id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                <button type="submit" class="btn btn-danger glass-button btn-sm">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info glass-card">
+            <i class="fas fa-info-circle text-primary"></i> No blog posts yet. Be the first to create one!
+        </div>
+    {% endif %}
+</div>
+
+<div class="container mt-3">
+    <div class="alert alert-info glass-card">
+        <i class="fas fa-info-circle text-primary"></i> Tip: URLs starting with http:// or https:// will automatically become clickable links that open in new tabs.
+    </div>
+</div>
+
+<style>
+.glass-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.glass-button {
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.glass-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+</style>
+{% endblock %}

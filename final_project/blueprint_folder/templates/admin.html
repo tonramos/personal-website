@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-dark">User Management</h1>
+        <button onclick="showAddForm()" class="btn btn-primary glass-button">
+            <i class="fas fa-user-plus"></i> Add New User
+        </button>
+    </div>
+
+    {% if error %}
+    <div class="alert alert-danger glass-card">{{ error }}</div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success glass-card">{{ success }}</div>
+    {% endif %}
+
+    <div class="card glass-card mb-4" id="add-form" style="display: none;">
+        <div class="card-header" style="background: rgba(13, 110, 253, 0.7);">
+            <h5 class="card-title mb-0 text-dark"><i class="fas fa-user-plus text-dark"></i> Add New User</h5>
+        </div>
+        <div class="card-body" style="background: rgba(255, 255, 255, 0.95);">
+            <form method="POST" action="{{ url_for('auth.add_user') }}" id="addUserForm" onsubmit="return validateForm(this);">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="username" class="form-label text-dark">Username</label>
+                        <input type="text" class="form-control glass-input trim-input" id="username" name="username" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="password" class="form-label text-dark">Password</label>
+                        <input type="password" class="form-control glass-input trim-input" id="password" name="password" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label text-dark">Email</label>
+                        <input type="email" class="form-control glass-input trim-input" id="email" name="email" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="full_name" class="form-label text-dark">Full Name</label>
+                        <input type="text" class="form-control glass-input trim-input" id="full_name" name="full_name" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="birthday" class="form-label text-dark">Birthday</label>
+                        <input type="date" class="form-control glass-input" id="birthday" name="birthday" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="age" class="form-label text-dark">Age</label>
+                        <input type="number" class="form-control glass-input trim-input" id="age" name="age" required>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="address" class="form-label text-dark">Address</label>
+                        <textarea class="form-control glass-input trim-input" id="address" name="address" required rows="2"></textarea>
+                    </div>
+                </div>
+                <div class="text-end">
+                    <button type="button" onclick="hideAddForm()" class="btn btn-secondary glass-button">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary glass-button">
+                        <i class="fas fa-save"></i> Add User
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+       
+    <div class="row">
+        {% for user in users %}
+        <div class="col-md-6 mb-4">
+            <div class="card glass-card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center" style="background: rgba(13, 110, 253, 0.7);">
+                    <h5 class="card-title mb-0 text-dark">
+                        <i class="fas fa-user text-dark"></i> {{ user.username }}
+                    </h5>
+                    <div class="btn-group">
+                        <button onclick="showEditForm('{{ user.username }}')" class="btn btn-light glass-button btn-sm">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <form method="POST" action="{{ url_for('auth.delete_user', username=user.username) }}" class="d-inline">
+                            <button type="submit" class="btn btn-danger glass-button btn-sm" onclick="return confirm('Are you sure you want to delete this user?')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-body" style="background: rgba(255, 255, 255, 0.95);">
+                    <div class="user-info">
+                        <p class="text-dark"><i class="fas fa-user-circle text-primary"></i> <strong>Name:</strong> {{ user.full_name }}</p>
+                        <p class="text-dark"><i class="fas fa-envelope text-primary"></i> <strong>Email:</strong> {{ user.email }}</p>
+                        <p class="text-dark"><i class="fas fa-calendar text-primary"></i> <strong>Birthday:</strong> 
+                            {% if user.birthday %}
+                                {{ user.birthday.strftime('%B %d, %Y') if user.birthday else 'Not set' }}
+                            {% else %}
+                                Not set
+                            {% endif %}
+                        </p>
+                        <p class="text-dark"><i class="fas fa-birthday-cake text-primary"></i> <strong>Age:</strong> {{ user.age }}</p>
+                        <p class="text-dark"><i class="fas fa-map-marker-alt text-primary"></i> <strong>Address:</strong> {{ user.address }}</p>
+                    </div>
+
+                    <div class="edit-form mt-3" id="edit-form-{{ user.username }}" style="display: none;">
+                        <hr>
+                        <h6 class="mb-3 text-dark"><i class="fas fa-edit text-primary"></i> Edit User Details</h6>
+                        <form method="POST" action="{{ url_for('auth.admin_update_user', username=user.username) }}">
+                            <div class="mb-3">
+                                <label for="edit_full_name" class="form-label text-dark">Full Name</label>
+                                <input type="text" class="form-control glass-input trim-input" id="edit_full_name" name="full_name" value="{{ user.full_name }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_email" class="form-label text-dark">Email</label>
+                                <input type="email" class="form-control glass-input trim-input" id="edit_email" name="email" value="{{ user.email }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_birthday" class="form-label text-dark">Birthday</label>
+                                <input type="date" class="form-control glass-input" id="edit_birthday" name="birthday" 
+                                       value="{{ user.birthday.strftime('%Y-%m-%d') if user.birthday else '' }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_age" class="form-label text-dark">Age</label>
+                                <input type="number" class="form-control glass-input trim-input" id="edit_age" name="age" value="{{ user.age }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_address" class="form-label text-dark">Address</label>
+                                <textarea class="form-control glass-input trim-input" id="edit_address" name="address" required rows="2">{{ user.address }}</textarea>
+                            </div>
+                            <div class="text-end">
+                                <button type="button" onclick="hideEditForm('{{ user.username }}')" class="btn btn-secondary glass-button btn-sm">
+                                    <i class="fas fa-times"></i> Cancel
+                                </button>
+                                <button type="submit" class="btn btn-primary text-primary glass-button btn-sm">
+                                    <i class="fas fa-save"></i> Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.glass-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.glass-input {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(13, 110, 253, 0.2) !important;
+    color: #212529 !important;
+    backdrop-filter: blur(5px);
+}
+
+.glass-input::placeholder {
+    color: rgba(33, 37, 41, 0.7);
+}
+
+.glass-input:focus {
+    background: rgba(255, 255, 255, 1) !important;
+    box-shadow: 0 0 10px rgba(13, 110, 253, 0.5) !important;
+}
+
+.glass-button {
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.glass-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+</style>
+
+<script>
+    function showAddForm() {
+        document.getElementById('add-form').style.display = 'block';
+        document.getElementById('add-form').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function hideAddForm() {
+        document.getElementById('add-form').style.display = 'none';
+        document.getElementById('addUserForm').reset();
+    }
+
+    function showEditForm(username) {
+        document.getElementById('edit-form-' + username).style.display = 'block';
+    }
+
+    function hideEditForm(username) {
+        document.getElementById('edit-form-' + username).style.display = 'none';
+    }
+
+    function validateForm(form) {
+        const inputs = form.getElementsByClassName('trim-input');
+        
+        for (let input of inputs) {
+            if (input.type !== 'password') {
+                input.value = input.value.trim();
+                
+                if (input.value === '' && input.required) {
+                    alert('Please fill in all required fields properly. Empty values are not allowed.');
+                    input.focus();
+                    return false;
+                }
+            }
+        }
+
+        const birthday = form.querySelector('input[type="date"]');
+        if (birthday && birthday.value) {
+            const birthDate = new Date(birthday.value);
+            const today = new Date();
+            if (birthDate > today) {
+                alert('Birthday cannot be in the future.');
+                birthday.focus();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputs = document.getElementsByClassName('trim-input');
+        for (let input of inputs) {
+            if (input.type !== 'password') {
+                input.addEventListener('blur', function() {
+                    this.value = this.value.trim();
+                });
+            }
+        }
+
+        const birthdayInput = document.getElementById('birthday');
+        const ageInput = document.getElementById('age');
+        
+        if (birthdayInput && ageInput) {
+            birthdayInput.addEventListener('change', function() {
+                if (this.value) {
+                    const birthDate = new Date(this.value);
+                    const today = new Date();
+                    let age = today.getFullYear() - birthDate.getFullYear();
+                    const monthDiff = today.getMonth() - birthDate.getMonth();
+                    
+                    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                        age--;
+                    }
+                    
+                    ageInput.value = age;
+                }
+            });
+        }
+    });
+</script>
+{% endblock %} 

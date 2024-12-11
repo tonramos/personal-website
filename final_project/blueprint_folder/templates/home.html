@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='home.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Home</title>
+</head>
+<body>
+    <div class="top-nav">
+        <div class="center-buttons">
+            <a href="{{ url_for('auth.profile') }}" class="profile-btn">
+                <i class="fas fa-user"></i> Profile
+            </a>
+            <a href="{{ url_for('auth.admin') }}" class="admin-btn">
+                <i class="fas fa-users-cog"></i> Manage Users
+            </a>
+            <a href="{{ url_for('auth.blog') }}" class="admin-btn">
+                <i class="fas fa-blog"></i> Blog
+            </a>
+        </div>
+        <a href="{{ url_for('auth.logout') }}" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+    <div class="container">
+        <h1>Welcome, {{ user.full_name }}!</h1>
+        <div class="content-wrapper">
+            <div class="profile-image">
+                <img src="{{ url_for('static', filename='Ramos, Anton.jpg') }}" alt="Profile Picture">
+            </div>
+            <div class="welcome-message">
+                <p>I am Anton Ramos, a second year Information Technology student at Laguna University.<br></br></p>
+                <p>My dream job as an IT student is to become a web developer.</p>
+                <div class="social-links">
+                    <a href="https://github.com/tonramos" target="_blank" class="social-btn text-primary">
+                        <i class="fab fa-github"></i> GitHub
+                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=100023683097270" target="_blank" class="social-btn">
+                        <i class="fab fa-facebook"></i> Facebook
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .social-links {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .social-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 20px;
+            background: rgba(13, 110, 253, 0.2);
+            border: 1px solid rgba(13, 110, 253, 0.3);
+            border-radius: 30px;
+            color: #0d6efd;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-btn i {
+            margin-right: 8px;
+            font-size: 1.2em;
+        }
+
+        .social-btn:hover {
+            background: rgba(13, 110, 253, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+            color: #ffffff;
+        }
+
+        .fa-github {
+            color: #0d6efd;
+        }
+
+        .fa-facebook {
+            color: #0d6efd;
+        }
+
+        .social-btn:hover .fa-github,
+        .social-btn:hover .fa-facebook {
+            color: #ffffff;
+        }
+    </style>
+</body>
+</html>
